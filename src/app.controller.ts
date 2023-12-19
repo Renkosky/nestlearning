@@ -18,7 +18,7 @@ export class AppController {
   @Post('/upload')
   getData(@Request() req): any {
     console.log(req);
-    console.log(req, 'req');
+    console.log(req.body, 'req');
     return { data: req.body };
   }
 }
