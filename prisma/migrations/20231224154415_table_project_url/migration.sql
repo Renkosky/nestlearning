@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE `project` ADD COLUMN `devUrl` VARCHAR(191) NULL,
+    ADD COLUMN `prodUrl` VARCHAR(191) NULL,
+    ADD COLUMN `uatUrl` VARCHAR(191) NULL;

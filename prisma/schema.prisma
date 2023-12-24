@@ -7,5 +7,23 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("localhost")
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int       @id @unique @default(autoincrement())
+  email     String
+  name      String?
+  Project   Project[]
+  projectId Int?
+}
+
+model Project {
+  id      Int     @id @unique @default(autoincrement())
+  name    String
+  owner   User[]
+  cover   String?
+  devUrl  String?
+  uatUrl  String?
+  prodUrl String?
 }
