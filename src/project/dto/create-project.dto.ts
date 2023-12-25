@@ -3,7 +3,7 @@ export class projectDto {
   name: string;
   description: string;
   created_at: Date;
-  img: string;
+  cover: string;
   devUrl: string;
   uatUrl: string;
   prodUrl: string;

@@ -19,11 +19,24 @@ model User {
 }
 
 model Project {
-  id      Int     @id @unique @default(autoincrement())
-  name    String
-  owner   User[]
-  cover   String?
-  devUrl  String?
-  uatUrl  String?
-  prodUrl String?
+  id          Int      @id @unique @default(autoincrement())
+  name        String
+  owner       User[]
+  devUrl      String
+  description String
+  created_at  DateTime @default(now())
+  cover       String?
+  uatUrl      String?
+  prodUrl     String?
+  rule        Rule[]
+}
+
+model Rule {
+  id        Int     @id @unique @default(autoincrement())
+  url       String
+  method    String
+  name      String
+  code      String
+  projectId Int
+  Project   Project @relation(fields: [projectId], references: [id])
 }
