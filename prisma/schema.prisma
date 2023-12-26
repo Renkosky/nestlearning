@@ -23,7 +23,7 @@ model Project {
   name        String
   owner       User[]
   devUrl      String
-  description String
+  description String?
   created_at  DateTime @default(now())
   cover       String?
   uatUrl      String?

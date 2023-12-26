@@ -8,6 +8,7 @@ export class ProjectController {
   @Post()
   async create(@Body() project: projectDto): Promise<any> {
     const res = await this.projectService.createProject(project);
+    console.log(res, 'res');
     return 'This action adds a new project';
   }
 }
