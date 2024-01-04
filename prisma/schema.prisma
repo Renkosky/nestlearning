@@ -21,14 +21,15 @@ model User {
 model Project {
   id          Int      @id @unique @default(autoincrement())
   name        String
-  owner       User[]
   devUrl      String
   description String?
   created_at  DateTime @default(now())
   cover       String?
   uatUrl      String?
   prodUrl     String?
+  owner       User[]
   rule        Rule[]
+  Report      Report[]
 }
 
 model Rule {
@@ -39,4 +40,14 @@ model Rule {
   code      String
   projectId Int
   Project   Project @relation(fields: [projectId], references: [id])
+}
+
+model Report {
+  id        Int      @id @unique @default(autoincrement())
+  projectId Int
+  Project   Project  @relation(fields: [projectId], references: [id])
+  ruleId    Int
+  status    String
+  message   String
+  createdAt DateTime @default(now())
 }
