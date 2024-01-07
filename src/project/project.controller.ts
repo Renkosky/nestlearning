@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { projectDto } from './dto/create-project.dto';
 import { ProjectService } from './project.service';
 
@@ -13,8 +13,21 @@ export class ProjectController {
   }
   @Get()
   async findAll(): Promise<any> {
-    const res = await this.projectService.findAll();
-    console.log(res, 'res');
-    return 'This action returns all project';
+    try {
+      const res = await this.projectService.findAll();
+      return { code: 0, data: res, msg: 'success' };
+    } catch (error) {
+      return { code: -1, data: null, msg: error };
+    }
+  }
+  @Get()
+  async findOne(@Param() param): Promise<any> {
+    if (!param?.id) return { code: -1, data: null, msg: 'id不能为空' };
+    try {
+      const res = await this.projectService.findOne(param?.id);
+      return { code: 0, data: res, msg: 'success' };
+    } catch (error) {
+      return { code: -1, data: null, msg: error };
+    }
   }
 }
