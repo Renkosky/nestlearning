@@ -7,9 +7,14 @@ export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
   @Post()
   async create(@Body() project: projectDto): Promise<any> {
-    const res = await this.projectService.createProject(project);
-    console.log(res, 'res');
-    return 'This action adds a new project';
+    const projectData = { ...project, created_at: new Date() };
+    try {
+      const res = await this.projectService.createProject(projectData);
+      return { code: 0, data: res, msg: 'success' };
+    } catch (error) {
+      console.log(error, 'ProjectController error');
+      return { code: -1, msg: error };
+    }
   }
   @Get()
   async findAll(): Promise<any> {

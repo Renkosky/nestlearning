@@ -43,12 +43,12 @@ model Rule {
 }
 
 model Report {
-  id        Int     @id @unique @default(autoincrement())
+  id        Int      @id @unique @default(autoincrement())
   projectId Int
-  Project   Project @relation(fields: [projectId], references: [id])
+  Project   Project  @relation(fields: [projectId], references: [id])
   ruleId    Int
   status    String
   message   String
-
   createdAt DateTime @default(now())
+  resloved  Boolean
 }

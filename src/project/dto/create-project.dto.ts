@@ -8,3 +8,9 @@ export class projectDto {
   uatUrl?: string;
   prodUrl?: string;
 }
+
+export class EnvironmentUrlsDTO {
+  devUrl?: string;
+  uatUrl?: string;
+  prodUrl?: string;
+}

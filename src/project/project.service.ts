@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { projectDto } from './dto/create-project.dto';
+import { EnvironmentUrlsDTO, projectDto } from './dto/create-project.dto';
 import { Project } from '@prisma/client';
 
 @Injectable()
@@ -8,11 +8,12 @@ export class ProjectService {
   constructor(private prisma: PrismaService) {}
   async createProject(data: projectDto) {
     try {
-      return this.prisma.project.create({
+      await this.findOne(data.devUrl, data?.uatUrl, data?.prodUrl);
+      return await this.prisma.project.create({
         data,
       });
     } catch (error) {
-      console.log(error);
+      return Promise.reject(error);
     }
   }
   async findAll() {
@@ -20,18 +21,35 @@ export class ProjectService {
       return this.prisma.project.findMany();
     } catch (error) {
       console.log(error);
+      return Promise.reject(error);
     }
   }
-  async findOne(url: string): Promise<Project | null> {
-    console.log(url, 'findOne url');
+
+  async findOne(
+    devUrl?: string,
+    uatUrl?: string,
+    prodUrl?: string,
+  ): Promise<Project | null> {
+    console.log(devUrl, 'findOne url');
+    if (!devUrl && !uatUrl && !prodUrl) {
+      return Promise.reject('至少传入一个URL参数');
+    }
+    const query = [{ devUrl }] as EnvironmentUrlsDTO[];
+    if (uatUrl) query.push({ uatUrl });
+    if (prodUrl) query.push({ prodUrl });
+
     try {
-      return this.prisma.project.findFirst({
+      const res = this.prisma.project.findFirst({
         where: {
-          OR: [{ devUrl: url }, { uatUrl: url }, { prodUrl: url }],
+          OR: query,
         },
       });
+      console.log(res, 'res');
+      return res;
     } catch (error) {
       console.log(error, '未找到匹配项目');
+      // 如果错误被捕获，则终止函数执行
+      throw error;
     }
   }
 }
