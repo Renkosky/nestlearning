@@ -37,14 +37,14 @@ export class ProjectService {
     const query = [{ devUrl }] as EnvironmentUrlsDTO[];
     if (uatUrl) query.push({ uatUrl });
     if (prodUrl) query.push({ prodUrl });
-
+    console.log(query, 'query');
     try {
-      const res = this.prisma.project.findFirst({
+      const res = await this.prisma.project.findFirst({
         where: {
           OR: query,
         },
       });
-      console.log(res, 'res');
+      console.log(res, 'findOne res');
       return res;
     } catch (error) {
       console.log(error, '未找到匹配项目');
