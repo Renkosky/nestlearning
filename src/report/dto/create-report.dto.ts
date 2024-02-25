@@ -1,12 +1,15 @@
 export class reportDto {
   data: {
-    id: number;
+    errorId: number;
     name: string;
+    createdAt:number;
+    resloved:boolean;
     level: string;
     message?: string;
-    stack?: string;
+    stack?: any[];
     type?: string;
-    uatUrl?: string;
     url?: string;
+    time: number
   };
+  breadcrumb:any[]
 }

@@ -1,15 +1,31 @@
 import { Injectable } from '@nestjs/common';
-
+import { PrismaService } from 'src/prisma.service';
+import { reportDto } from './dto/create-report.dto';
+import { Prisma } from '@prisma/client';
 @Injectable()
 export class ReportService {
-  async createReport(body: any, projetId: number) {
-    console.log(body, 'body');
-    const report = {
-      ...body?.data,
-      stack: JSON.stringify(body?.stack),
-      projectId: projetId,
-      breadcrumb: JSON.stringify(body?.breadcrumb),
+  constructor(private prisma: PrismaService) {}
+  async createReport(body: reportDto, projectId: number) {
+    const { data:{type,stack,level,url,time, name,message}, breadcrumb, } = body;
+    const data = {
+      id: body?.data?.errorId,
+      projectId,
+      type,
+      name,
+      level,
+      createdAt: new Date(time),
+      url,
+      message,
+      stack,
+      breadcrumb
     };
-    console.log(report, 'report');
+
+    try {
+      return await this.prisma.report.create(
+        {data} 
+      );
+    } catch (error) {
+      return Promise.reject(error);
+    }
   }
 }

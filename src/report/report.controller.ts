@@ -1,8 +1,9 @@
-import { Body, Controller, Post, Request } from '@nestjs/common';
+import { BadRequestException, Body, Controller, NotFoundException, Post, Request } from '@nestjs/common';
 import { reportDto } from './dto/create-report.dto';
 import { ProjectService } from 'src/project/project.service';
 import { ReportService } from './report.service';
 import { URL } from 'url';
+import {last, split} from 'lodash'
 @Controller('report')
 export class ReportController {
   constructor(
@@ -17,17 +18,18 @@ export class ReportController {
         const res = await this.projectService.findOne(
           `${parsedUrl.protocol}//${parsedUrl.hostname}`,
         );
-        console.log(res, 'res');
         if (res) {
           const createRes = await this.reportService.createReport(body, res.id);
+          console.log(createRes, 'createRes');
           return { code: 0, msg: 'success' };
         }
       } catch (error) {
         console.log(error);
-        return { code: -1, data: null, msg: error };
+        return { code: -1, data: null, msg: last(split(error,'\n')) };
       }
     } else {
-      return { code: -1, data: null, msg: 'url不能为空' };
+      throw new BadRequestException('url不能为空');
+      // return { code: -1, data: null, msg: 'url不能为空' };
     }
   }
 }
