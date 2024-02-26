@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, NotFoundException, Post, Request } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, HttpStatus, NotFoundException, Param, Post, Query, Request } from '@nestjs/common';
 import { reportDto } from './dto/create-report.dto';
 import { ProjectService } from 'src/project/project.service';
 import { ReportService } from './report.service';
@@ -14,7 +14,7 @@ export class ReportController {
   async saveReport(@Body() body: reportDto) {
     if (body?.data?.url) {
       const parsedUrl = new URL(body?.data?.url);
-      try {
+    
         const res = await this.projectService.findOne(
           `${parsedUrl.protocol}//${parsedUrl.hostname}`,
         );
@@ -23,13 +23,17 @@ export class ReportController {
           console.log(createRes, 'createRes');
           return { code: 0, msg: 'success' };
         }
-      } catch (error) {
-        console.log(error);
-        return { code: -1, data: null, msg: last(split(error,'\n')) };
-      }
+ 
     } else {
       throw new BadRequestException('url不能为空');
       // return { code: -1, data: null, msg: 'url不能为空' };
     }
+  }
+
+  @Get()
+  async getReportByPId(@Query() param){
+    if(!param?.id) throw new BadRequestException('项目id不能为空')
+    const res = await this.reportService.getReportByProjectId(Number(param?.id))
+    if(res) return {code:0,data:res}
   }
 }

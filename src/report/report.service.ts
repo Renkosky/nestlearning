@@ -28,4 +28,10 @@ export class ReportService {
       return Promise.reject(error);
     }
   }
+  
+  async getReportByProjectId(projectId:number){
+    return  await this.prisma.report.findMany(
+      {where:{projectId:projectId}}
+    )
+  }
 }

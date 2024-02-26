@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { EnvironmentUrlsDTO, projectDto } from './dto/create-project.dto';
 import { Project } from '@prisma/client';
@@ -30,26 +30,26 @@ export class ProjectService {
     uatUrl?: string,
     prodUrl?: string,
   ): Promise<Project | null> {
-    console.log(devUrl, 'findOne url');
-    if (!devUrl && !uatUrl && !prodUrl) {
-      return Promise.reject('至少传入一个URL参数');
-    }
-    const query = [{ devUrl }] as EnvironmentUrlsDTO[];
-    if (uatUrl) query.push({ uatUrl });
-    if (prodUrl) query.push({ prodUrl });
-    console.log(query, 'query');
     try {
+      console.log(devUrl, 'findOne url');
+      if (!devUrl && !uatUrl && !prodUrl) {
+        throw new Error('至少传入一个URL参数');
+      }
+      const query = [{ devUrl }] as EnvironmentUrlsDTO[];
+      if (uatUrl) query.push({ uatUrl });
+      if (prodUrl) query.push({ prodUrl });
+      console.log(query, 'query');
       const res = await this.prisma.project.findFirst({
-        where: {
-          OR: query,
-        },
-      });
+          where: {
+            OR: query,
+          },
+        });
       console.log(res, 'findOne res');
-      return res;
+      if(res)  return res;
+      throw new NotFoundException('未找到匹配项目')
     } catch (error) {
-      console.log(error, '未找到匹配项目');
-      // 如果错误被捕获，则终止函数执行
-      throw error;
+      console.error(error);
+      throw new InternalServerErrorException('服务器内部错误');
     }
   }
 }
