@@ -43,7 +43,8 @@ model Rule {
 }
 
 model Report {
-  id         Int      @id @unique
+  id         Int      @id @unique @default(autoincrement())
+  errorId    Int
   projectId  Int
   ruleId     Int?
   message    String

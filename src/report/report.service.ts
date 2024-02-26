@@ -6,9 +6,12 @@ import { Prisma } from '@prisma/client';
 export class ReportService {
   constructor(private prisma: PrismaService) {}
   async createReport(body: reportDto, projectId: number) {
-    const { data:{type,stack,level,url,time, name,message}, breadcrumb, } = body;
+    const {
+      data: { type, stack, level, url, time, name, message },
+      breadcrumb,
+    } = body;
     const data = {
-      id: body?.data?.errorId,
+      errorId: body?.data?.errorId,
       projectId,
       type,
       name,
@@ -17,21 +20,19 @@ export class ReportService {
       url,
       message,
       stack,
-      breadcrumb
+      breadcrumb,
     };
 
     try {
-      return await this.prisma.report.create(
-        {data} 
-      );
+      return await this.prisma.report.create({ data });
     } catch (error) {
       return Promise.reject(error);
     }
   }
-  
-  async getReportByProjectId(projectId:number){
-    return  await this.prisma.report.findMany(
-      {where:{projectId:projectId}}
-    )
+
+  async getReportByProjectId(projectId: number) {
+    return await this.prisma.report.findMany({
+      where: { projectId: projectId },
+    });
   }
 }

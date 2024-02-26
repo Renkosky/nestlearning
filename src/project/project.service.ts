@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { EnvironmentUrlsDTO, projectDto } from './dto/create-project.dto';
 import { Project } from '@prisma/client';
@@ -40,13 +44,13 @@ export class ProjectService {
       if (prodUrl) query.push({ prodUrl });
       console.log(query, 'query');
       const res = await this.prisma.project.findFirst({
-          where: {
-            OR: query,
-          },
-        });
+        where: {
+          OR: query,
+        },
+      });
       console.log(res, 'findOne res');
-      if(res)  return res;
-      throw new NotFoundException('未找到匹配项目')
+      if (res) return res;
+      throw new NotFoundException('未找到匹配项目');
     } catch (error) {
       console.error(error);
       throw new InternalServerErrorException('服务器内部错误');
