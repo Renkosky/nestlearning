@@ -35,4 +35,8 @@ export class ReportService {
       where: { projectId: projectId },
     });
   }
+
+  async getReportById(errorId: number) {
+    return await this.prisma.report.findUnique({ where: { errorId } });
+  }
 }
