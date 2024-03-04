@@ -54,7 +54,7 @@ model Report {
   level      String
   type       String
   url        String
-  stack      Json
+  stack      Json?
   breadcrumb Json
   Project    Project  @relation(fields: [projectId], references: [id])
 }
