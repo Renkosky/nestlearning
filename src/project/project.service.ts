@@ -24,7 +24,6 @@ export class ProjectService {
     try {
       return this.prisma.project.findMany();
     } catch (error) {
-      console.log(error);
       return Promise.reject(error);
     }
   }
@@ -35,20 +34,18 @@ export class ProjectService {
     prodUrl?: string,
   ): Promise<Project | null> {
     try {
-      console.log(devUrl, 'findOne url');
       if (!devUrl && !uatUrl && !prodUrl) {
         throw new Error('至少传入一个URL参数');
       }
       const query = [{ devUrl }] as EnvironmentUrlsDTO[];
       if (uatUrl) query.push({ uatUrl });
       if (prodUrl) query.push({ prodUrl });
-      console.log(query, 'query');
       const res = await this.prisma.project.findFirst({
         where: {
           OR: query,
         },
       });
-      console.log(res, 'findOne res');
+
       if (res) return res;
       throw new NotFoundException('未找到匹配项目');
     } catch (error) {

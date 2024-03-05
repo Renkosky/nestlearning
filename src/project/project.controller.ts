@@ -52,12 +52,11 @@ export class ProjectController {
     }
   }
 
-  @Get('/detail')
-  async getReportByPId(@Query() param) {
-    if (!param?.id) throw new BadRequestException('项目id不能为空');
-    const res = await this.reportService.getReportByProjectId(
-      Number(param?.id),
-    );
+  @Post('/report')
+  async getReport(@Body() body) {
+    if (!body?.projectId) throw new BadRequestException('项目id不能为空');
+
+    const res = await this.reportService.findReport(body);
     if (res) return { code: 0, data: res };
   }
 }

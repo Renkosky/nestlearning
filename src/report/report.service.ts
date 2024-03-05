@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { reportDto } from './dto/create-report.dto';
 import { Prisma } from '@prisma/client';
+import { findReportDto } from './dto/find-report.dto';
 @Injectable()
 export class ReportService {
   constructor(private prisma: PrismaService) {}
@@ -35,8 +36,14 @@ export class ReportService {
       where: { projectId: projectId },
     });
   }
-
-  async getReportById(errorId: number) {
-    return await this.prisma.report.findUnique({ where: { errorId } });
+  async findReport(param: findReportDto) {
+    return await this.prisma.report.findMany({
+      where: {
+        ...param,
+      },
+    });
+  }
+  async getReportById(id, errorId: number) {
+    return await this.prisma.report.findUnique({ where: { errorId, id } });
   }
 }

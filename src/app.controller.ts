@@ -12,13 +12,10 @@ export class AppController {
 
   @Get('/test')
   getTest(@Request() req): { data: string } {
-    console.log(req.query);
     return this.appService.getTest();
   }
   @Post('/upload')
   getData(@Request() req): any {
-    console.log(req);
-    console.log(req.body, 'req');
     return { data: req.body };
   }
 }
