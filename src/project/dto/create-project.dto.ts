@@ -4,6 +4,7 @@ export class projectDto {
   devUrl: string;
   description?: string;
   created_at?: Date;
+  ownerId: number;
   cover?: string;
   uatUrl?: string;
   prodUrl?: string;

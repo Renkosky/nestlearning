@@ -6,9 +6,16 @@ export class UserService {
   constructor(private prisma: PrismaService) {}
   // Prisma.UserWhereUniqueInput 由 Prisma 自动生成的输入类型，用于标识唯一用户的输入条件。在使用 Prisma 进行数据库操作时，这种类型通常用于在查询或定位特定用户时指定唯一的标识或条件。
   // https://prisma.nodejs.cn/reference/api-reference/prisma-client-reference#findunique
-  async user(userWhereUniqueInput: Prisma.UserWhereUniqueInput) {
+  async findOneUser(userWhereUniqueInput: Prisma.UserWhereUniqueInput) {
     return this.prisma.user.findUnique({
       where: userWhereUniqueInput,
+    });
+  }
+  async findUserByNane(name: string) {
+    return this.prisma.user.findFirst({
+      where: {
+        name,
+      },
     });
   }
 

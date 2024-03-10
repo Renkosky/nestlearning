@@ -2,19 +2,15 @@ import {
   BadRequestException,
   Body,
   Controller,
-  Get,
-  HttpStatus,
-  NotFoundException,
-  Param,
   Post,
-  Query,
-  Request,
+  UseGuards,
 } from '@nestjs/common';
 import { reportDto } from './dto/create-report.dto';
 import { ProjectService } from 'src/project/project.service';
 import { ReportService } from './report.service';
 import { URL } from 'url';
-import { last, split } from 'lodash';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+@UseGuards(JwtAuthGuard)
 @Controller('report')
 export class ReportController {
   constructor(

@@ -7,10 +7,13 @@ import {
   Param,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { projectDto } from './dto/create-project.dto';
 import { ProjectService } from './project.service';
 import { ReportService } from '../report/report.service';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+@UseGuards(JwtAuthGuard)
 @Controller('/project')
 export class ProjectController {
   constructor(
@@ -28,6 +31,7 @@ export class ProjectController {
       return { code: -1, msg: error };
     }
   }
+
   @Get()
   async findAll(): Promise<any> {
     try {

@@ -11,11 +11,11 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @unique @default(autoincrement())
-  email     String
-  name      String?
-  Project   Project[]
-  projectId Int?
+  id       Int       @id @unique @default(autoincrement())
+  email    String
+  name     String?
+  password String
+  Project  Project[]
 }
 
 model Project {
@@ -28,6 +28,7 @@ model Project {
   uatUrl      String?
   prodUrl     String?
   owner       User[]
+  ownerId     Int
   rule        Rule[]
   Report      Report[]
 }
