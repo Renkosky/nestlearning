@@ -42,4 +42,12 @@ export class ReportController {
     const res = await this.reportService.getReportByProjectId(Number(body?.id));
     if (res) return { code: 0, data: res };
   }
+
+  @Post('/status')
+  async changeStatus(@Body() body: { id: number; status: boolean }) {
+    if (!body?.id) throw new BadRequestException('id不能为空');
+    if (!body?.status) throw new BadRequestException('status不能为空');
+    const res = await this.reportService.changeResloved(body?.id, body?.status);
+    if (res) return { code: 0, data: res };
+  }
 }

@@ -37,6 +37,7 @@ export class ReportService {
     });
   }
   async findReport(param: findReportDto) {
+    console.log(param);
     return await this.prisma.report.findMany({
       where: {
         ...param,
@@ -45,5 +46,14 @@ export class ReportService {
   }
   async getReportById(id, errorId: number) {
     return await this.prisma.report.findUnique({ where: { errorId, id } });
+  }
+
+  async changeResloved(id, stat: boolean) {
+    return await this.prisma.report.update({
+      where: { id },
+      data: {
+        resolved: stat,
+      },
+    });
   }
 }
