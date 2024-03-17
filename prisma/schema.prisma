@@ -15,7 +15,7 @@ model User {
   email    String
   name     String?
   password String
-  Project  Project[]
+  projects Project[] // 定义一个字段来表示用户拥有的所有项目
 }
 
 model Project {
@@ -27,8 +27,8 @@ model Project {
   cover       String?
   uatUrl      String?
   prodUrl     String?
-  owner       User[]
-  ownerId     Int
+  ownerId     Int // 定义一个 ownerId 字段来表示项目所有者的用户 ID
+  owner       User     @relation(fields: [ownerId], references: [id]) // 创建一个关联关系，将 ownerId 字段与 User 模型的 id 字段关联起来
   rule        Rule[]
   Report      Report[]
 }

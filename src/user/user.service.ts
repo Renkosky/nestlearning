@@ -58,4 +58,13 @@ export class UserService {
       where,
     });
   }
+
+  async findUserProjects(params: { where: Prisma.UserWhereUniqueInput }) {
+    return this.prisma.user.findUnique({
+      where: params.where,
+      include: {
+        projects: true,
+      },
+    });
+  }
 }

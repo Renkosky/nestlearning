@@ -6,10 +6,14 @@ import {
   Post,
   Query,
   Body,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { createHash } from 'crypto';
 import { AuthService } from 'src/auth/auth.service';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { omit } from 'lodash';
 
 function md5(str) {
   const hash = createHash('md5');
@@ -47,14 +51,14 @@ export class UserController {
     });
 
     console.log(user);
-    return user;
+    return { code: 0, data: user };
   }
 
   @Post('login')
   async login(@Body() body: any) {
     const user = await this.userService.findUserByNane(body?.name);
     if (user && user.password === md5(body?.password)) {
-      const token = await this.authService.login(body);
+      const token = await this.authService.certificate(omit(user, 'password'));
       return { code: 0, ...token };
     }
     throw new HttpException('用户名密码错误', 400);

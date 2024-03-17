@@ -10,7 +10,7 @@ import { ProjectService } from 'src/project/project.service';
 import { ReportService } from './report.service';
 import { URL } from 'url';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-@UseGuards(JwtAuthGuard)
+
 @Controller('report')
 export class ReportController {
   constructor(

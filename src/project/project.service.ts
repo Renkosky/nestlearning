@@ -47,7 +47,7 @@ export class ProjectService {
       });
 
       if (res) return res;
-      throw new NotFoundException('未找到匹配项目');
+      // throw new NotFoundException('未找到匹配项目');
     } catch (error) {
       console.error(error);
       throw new InternalServerErrorException('服务器内部错误');
